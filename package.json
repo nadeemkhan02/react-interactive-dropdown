@@ -1,0 +1,11 @@
+{
+  "name": "react-interactive-dropdown",
+  "version": "1.0.0",
+  "description": "react-interactive-dropdown package repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
