@@ -11,20 +11,25 @@ const Dropdown = ({ options, onSelect }) => {
   };
 
   return (
-    <div>
-      <div onClick={() => setIsOpen(!isOpen)}>
-        {selected || "Select an option"}
-      </div>
-      {isOpen && (
-        <ul>
-          {options.map((option) => (
-            <li key={option} onClick={() => handleSelect(option)}>
-              {option}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <p>
+        Hello World
+      </p>
+    </>
+    // <div id="react-inter-active-dropdown">
+    //   <div onClick={() => setIsOpen(!isOpen)}>
+    //     {selected || "Select an option"}
+    //   </div>
+    //   {isOpen && (
+    //     <ul>
+    //       {options.map((option) => (
+    //         <li key={option} onClick={() => handleSelect(option)}>
+    //           {option}
+    //         </li>
+    //       ))}
+    //     </ul>
+    //   )}
+    // </div>
   );
 };
 

@@ -1,0 +1,60 @@
+.styled-menu-div{
+font-family: "Lato";
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;    
+  letter-spacing: 0px;
+  text-align: left;
+  padding: 8px 16px;
+  border-radius: 6px;
+  gap: 8px;
+  margin: 2px 0px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.styled-menu-div:hover {
+  background-color: #f5f5f5; /* Replace with desired hover background color */
+  color: #0073e6; /* Replace with sosPrimary[500] equivalent */
+  cursor: pointer;
+}
+
+.selected-styled-menu-div{
+    font-family: "Lato";
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;    
+    letter-spacing: 0px;
+    text-align: left;
+    padding: 8px 16px;
+    border-radius: 6px;
+    gap: 8px;
+    margin: 2px 0px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    color: #0073e6; /* Replace with sosPrimary[500] equivalent */
+
+  }
+  
+  .styled-menu-div:hover {
+    background-color: #f5f5f5; /* Replace with desired hover background color */
+    color: #0073e6; /* Replace with sosPrimary[500] equivalent */
+    cursor: pointer;
+  }
+
+.menu-search-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.menu-search-input{
+    border-radius: 5px;
+    padding: 5px;
+    width: 90%;
+}
