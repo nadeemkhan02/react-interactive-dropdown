@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.95% </span>
+                <span class="strong">51.68% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/88</span>
+                <span class='fraction'>46/89</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.11% </span>
+                <span class="strong">38.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>45/102</span>
+                <span class='fraction'>42/108</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">45.94% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>18/36</span>
+                <span class='fraction'>17/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.97% </span>
+                <span class="strong">52.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/86</span>
+                <span class='fraction'>46/87</span>
             </div>
         
             
@@ -440,7 +440,14 @@
 <a name='L375'></a><a href='#L375'>375</a>
 <a name='L376'></a><a href='#L376'>376</a>
 <a name='L377'></a><a href='#L377'>377</a>
-<a name='L378'></a><a href='#L378'>378</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -483,13 +490,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -720,6 +728,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -788,6 +797,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -825,7 +835,7 @@ import SELECT_CARET from "./arrowDownLightGrey.svg";
 import './dynamicSearch.css'
 import { Chip } from "./Chips/chips";
 &nbsp;
-function SearchBoxSelect({
+function InteractiveDropdown({
     selectionList = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
     placeholder,
     labelKeys,
@@ -847,7 +857,9 @@ function SearchBoxSelect({
     isServerSideSearch = false,
     onSearchQueryChange = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; { },
     menuWidth,
-    isComponentOptions = false
+    isComponentOptions = false,
+    onLastRowIntersect = <span class="fstat-no" title="function not covered" >()</span> =&gt; { },
+    isPagination = false
 }) {
     const [searchText, setSearchText] = useState("");
     const [selection, setSelection] = useState(value);
@@ -859,14 +871,15 @@ function SearchBoxSelect({
     const observer = useRef();
 &nbsp;
     const lastElementRef = useCallback(
-        (node) =&gt; {
-            if (observer.current) observer.current.disconnect();
-            observer.current = new IntersectionObserver(<span class="fstat-no" title="function not covered" >(e</span>ntries) =&gt; {
+<span class="fstat-no" title="function not covered" >        (n</span>ode) =&gt; {
+<span class="cstat-no" title="statement not covered" >            if (observer.current) <span class="cstat-no" title="statement not covered" >observer.current.disconnect();</span></span>
+<span class="cstat-no" title="statement not covered" >            observer.current = new IntersectionObserver(<span class="fstat-no" title="function not covered" >(e</span>ntries) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >                if (entries[0].isIntersecting) {</span>
-<span class="cstat-no" title="statement not covered" >                    console.log("test-intersection")</span>
+<span class="cstat-no" title="statement not covered" >                    console.log("test-intersection");</span>
+<span class="cstat-no" title="statement not covered" >                    onLastRowIntersect()</span>
                 }
             });
-            if (node) observer.current.observe(node);
+<span class="cstat-no" title="statement not covered" >            if (node) <span class="cstat-no" title="statement not covered" >observer.current.observe(node);</span></span>
         },
         []
     );
@@ -1057,11 +1070,11 @@ function SearchBoxSelect({
                     sx={{ p: 0, mt: 0.7 }}
                     keepMounted={true}
                     ref={wrapperRef}
-                    style={{ width: menuWidth ? <span class="branch-0 cbranch-no" title="branch not covered" >menuWidth </span>: "100%", border: "1px solid gray", padding: "5px", borderRadius:"5px", marginTop:"5px" }}
+                    style={{ width: menuWidth ? <span class="branch-0 cbranch-no" title="branch not covered" >menuWidth </span>: "100%", border: "1px solid gray", padding: "5px", borderRadius: "5px", marginTop: "5px" }}
                     className="main-menu-container"
                 &gt;
                     {isSearchable &amp;&amp; (
-                        &lt;div className="menu-search-div" style={{ width: "100%"}}&gt;
+                        &lt;div className="menu-search-div" style={{ width: "100%" }}&gt;
                             &lt;input
                                 onChange={isServerSideSearch ? <span class="branch-0 cbranch-no" title="branch not covered" >onSearchQueryChange </span>: handleSearchChange}
                                 placeholder="Search..."
@@ -1092,9 +1105,10 @@ function SearchBoxSelect({
                             {({ index, style }) =&gt; {
                                 return (
                                     &lt;div className="menu-div" style={style} ref={
-                                        displayOptions?.length === index + 1
-                                            ? lastElementRef
-                                            : null
+                                        isPagination ?
+                                            (<span class="branch-0 cbranch-no" title="branch not covered" >displayOptions?.length === index + 1</span>
+                                                ? lastElementRef
+                                                : null) : null
                                     }&gt;
                                         &lt;div className={"styled-menu-div"}
                                             onClick={() =&gt; handleSelect(displayOptions[index])}
@@ -1127,11 +1141,11 @@ function SearchBoxSelect({
                     sx={{ p: 0, mt: 0.7 }}
                     keepMounted={true}
                     ref={wrapperRef}
-                    style={{ width: menuWidth ? menuWidth : "100%", border: "1px solid gray", padding: "5px", borderRadius:"5px", marginTop:"5px" }}
+                    style={{ width: menuWidth ? menuWidth : "100%", border: "1px solid gray", padding: "5px", borderRadius: "5px", marginTop: "5px" }}
                     className="main-menu-container"
                 &gt;
                     {isSearchable &amp;&amp; (
-                        &lt;div style={{ width:"100%" }} className="menu-search-div"&gt;
+                        &lt;div style={{ width: "100%" }} className="menu-search-div"&gt;
                             &lt;input
                                 onChange={isServerSideSearch ? onSearchQueryChange : <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
 <span class="cstat-no" title="statement not covered" >                                    setSearchText(e.target.value);</span>
@@ -1160,9 +1174,10 @@ function SearchBoxSelect({
                             displayOptions.map(<span class="fstat-no" title="function not covered" >(i</span>tem, index) =&gt; {
 <span class="cstat-no" title="statement not covered" >                                return (</span>
                                     &lt;div ref={
-                                        displayOptions?.length === index + 1
-                                            ? lastElementRef
-                                            : null
+                                        isPagination ?
+                                            (displayOptions?.length === index + 1
+                                                ? lastElementRef
+                                                : null) : null
                                     } className="menu-div" key={index}&gt;
                                         {(
                                             &lt;div className={multiSelection.indexOf(item) &gt; -1 ? "selected-styled-menu-div" : "styled-menu-div"} onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleMultiSelect(item)}</span>&gt;
@@ -1194,14 +1209,14 @@ function SearchBoxSelect({
     }
 }
 &nbsp;
-export default SearchBoxSelect;</pre></td></tr></table></pre>
+export default InteractiveDropdown;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-08-10T19:47:09.190Z
+                at 2024-08-10T20:02:42.565Z
             </div>
         <script src="../prettify.js"></script>
         <script>
