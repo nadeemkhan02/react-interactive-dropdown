@@ -1,33 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
-import SELECT_CARET from "../../assets/arrowDownLightGrey.svg";
-import "./dynamicSearch.css";
+import SelectCaret from "../../assets/arrowDownLightGrey.svg";
+import CrossIcon from "../../assets/crossIcon.svg";
+import "./dynamicDropdown.css";
 
 function InteractiveDropdown({
-  selectionList = [],
-  placeholder,
-  labelKeys,
-  valueKey,
-  value = null,
-  onChange = (e) => {},
-  autoFormat = false,
-  name,
-  isRequired,
-  label = null,
-  isSearchable = true,
-  isMultiSelect = false,
-  withCheckBox = false,
-  withChips = false,
-  iconComponent = null,
-  isDisabled = false,
-  endAdornment = null,
-  chipStyle,
-  isServerSideSearch = false,
-  onSearchQueryChange = (e) => {},
-  menuWidth,
-  isComponentOptions = false,
-  onLastRowIntersect = () => {},
-  isPagination = false,
+  selectionList = [], // List of selection options
+  placeholder, // Placeholder text for dropdown
+  labelKeys, // Keys used for labeling options
+  valueKey, // Key for value of options
+  value = null, // Selected value(s)
+  onChange = (e) => {}, // Callback function for handling selection changes
+  autoFormat = false, // If true, automatically formats the labels
+  name, // Dropdown name
+  isRequired, // If true, the dropdown is required
+  label = null, // Label for the dropdown
+  isSearchable = true, // If true, enables search functionality
+  isMultiSelect = false, // If true, enables multi-select
+  withCheckBox = false, // If true, displays checkboxes for multi-select options
+  withChips = false, // If true, displays chips for selected items
+  iconComponent = null, // Custom component for option icons
+  isDisabled = false, // If true, disables the dropdown
+  endAdornment = null, // Additional adornment for the end of each option
+  chipStyle, // Custom style for chips
+  isServerSideSearch = false, // If true, search queries are handled server-side
+  onSearchQueryChange = (e) => {}, // Callback function for search query changes
+  menuWidth, // Custom width for the dropdown menu
+  isComponentOptions = false, // If true, options are rendered as components
+  onLastRowIntersect = () => {}, // Callback function for when the last row is intersected
+  isPagination = false, // If true, enables pagination
 }) {
   const [searchText, setSearchText] = useState("");
   const [selection, setSelection] = useState(value);
@@ -35,6 +36,7 @@ function InteractiveDropdown({
   const [multiSelection, setMultiSelection] = useState([]);
   const [displayOptions, setDisplayOptions] = useState([]);
   let [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const observer = useRef();
 
@@ -63,10 +65,15 @@ function InteractiveDropdown({
     }, [ref, onClickOutside]);
   }
 
-  const wrapperRef = useRef("menu");
-  useClickOutside(wrapperRef, () => {
+  useClickOutside(dropdownRef, () => {
     setOpen(false);
   });
+
+  const toggleDropdown = (e) => {
+    e.stopPropagation(); // Prevent the click event from propagating to the document
+    setOpen((prevOpen) => !prevOpen);
+  };
+  const wrapperRef = useRef("menu");
 
   useEffect(() => {
     let array = [];
@@ -127,69 +134,91 @@ function InteractiveDropdown({
         </div>
       )}
       <div
-        id={name}
-        style={{
-          padding: "10px 10px 10px 10px",
-          border: "1px solid #8e8d8d",
-          borderRadius: "6px",
-          display: "flex",
-          minHeight: "35px",
-          justifyContent: "space-between",
-          alignItems: "center",
-          cursor: "pointer",
-          width: menuWidth ? menuWidth : "100%",
-          pointerEvents: isDisabled ? "none" : "all",
-          opacity: isDisabled ? 0.5 : 1,
-        }}
-        onClick={() => {
-          setOpen(!open);
-        }}
-        ref={wrapperRef}
+        style={{ position: "relative", width: menuWidth ? menuWidth : "100%" }}
+        ref={dropdownRef}
       >
-        <div>
-          {isMultiSelect && multiSelection?.length && !withChips > 0
-            ? multiSelection.map((select, key) => (
-                <>
-                  <div
-                    key={select.value}
-                    className="chip"
-                    style={{ ...chipStyle }}
-                  >
-                    <span>{select.label}</span>
-                    <button
-                      className="closeButton"
-                      onClick={() => handleMultiSelectDelete(select)}
-                    >
-                      &#x2715; {/* Unicode for the cross (✕) */}
-                    </button>
-                  </div>
-                </>
-              ))
-            : null}
-        </div>
-        <div>{selection ? selection.label : placeholder}</div>
-        <div>
-          <img
-            src={SELECT_CARET}
-            alt=""
+        <div
+          id={name}
+          style={{
+            padding: "10px 10px 10px 10px",
+            border: "1px solid #8e8d8d",
+            borderRadius: "6px",
+            display: "flex",
+            minHeight: "35px",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            width: "100%",
+            pointerEvents: isDisabled ? "none" : "all",
+            opacity: isDisabled ? 0.5 : 1,
+          }}
+          onClick={(e) => toggleDropdown(e)}
+        >
+          <div
             style={{
-              transition: "all .2s ease",
+              marginTop: "2px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "start",
+              flexWrap: "wrap",
             }}
-          />
+          >
+            {isMultiSelect && multiSelection?.length && !withChips > 0
+              ? multiSelection.map((select, key) => (
+                  <>
+                    <div
+                      key={select.value}
+                      className="chip"
+                      style={{ ...chipStyle }}
+                    >
+                      <span>{select.label}</span>
+                      <img
+                        src={CrossIcon}
+                        className="closeButton"
+                        onClick={() => handleMultiSelectDelete(select)}
+                      />
+                    </div>
+                  </>
+                ))
+              : null}
+          </div>
+          <div>{selection ? selection.label : placeholder}</div>
+          <div>
+            <img
+              src={SelectCaret}
+              alt=""
+              style={{
+                transition: "all .2s ease",
+              }}
+            />
+          </div>
+        </div>
+        <div
+          class="options-container"
+          style={{ display: open ? "block" : "none" }}
+        >
+          {isMultiSelect ? renderMultiSelectMenu() : renderSelectMenu()}
         </div>
       </div>
-      {isMultiSelect ? renderMultiSelectMenu() : renderSelectMenu()}
-      <div sx={{ mt: 1 }}>
-        {isMultiSelect && multiSelection?.length && withChips && !open > 0
+
+      <div
+        style={{
+          marginTop: "2px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "start",
+          flexWrap: "wrap",
+        }}
+      >
+        {isMultiSelect && multiSelection?.length && withChips && !open
           ? multiSelection.map((select, key) => (
               <div key={select.value} className="chip" style={{ ...chipStyle }}>
                 <span>{select.label}</span>
-                <button
+                <img
+                  src={CrossIcon}
                   className="closeButton"
                   onClick={() => handleMultiSelectDelete(select)}
-                >
-                  &#x2715; {/* Unicode for the cross (✕) */}
-                </button>
+                />
               </div>
             ))
           : null}
@@ -213,7 +242,7 @@ function InteractiveDropdown({
         return (
           <>
             {isComponentOptions ? (
-              <div className="value-label">{value.html}</div>
+              <div className="value-label">{value.comp}</div>
             ) : (
               <div className="value-label">
                 {value.label?.length <= 30
@@ -245,7 +274,7 @@ function InteractiveDropdown({
           <div // TODO : Menu ...
             sx={{ p: 0, mt: 0.7 }}
             keepMounted={true}
-            ref={wrapperRef}
+            // ref={wrapperRef}
             style={{
               width: menuWidth ? menuWidth : "100%",
               border: "1px solid gray",
@@ -341,7 +370,6 @@ function InteractiveDropdown({
           <div
             sx={{ p: 0, mt: 0.7 }}
             keepMounted={true}
-            ref={wrapperRef}
             style={{
               width: menuWidth ? menuWidth : "100%",
               border: "1px solid gray",

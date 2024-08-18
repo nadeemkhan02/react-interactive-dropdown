@@ -8,7 +8,8 @@ exports["default"] = void 0;
 var _react = require("react");
 var _reactWindow = require("react-window");
 var _arrowDownLightGrey = _interopRequireDefault(require("../../assets/arrowDownLightGrey.svg"));
-require("./dynamicSearch.css");
+var _crossIcon = _interopRequireDefault(require("../../assets/crossIcon.svg"));
+require("./dynamicDropdown.css");
 var _jsxRuntime = require("react/jsx-runtime");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -92,6 +93,7 @@ function InteractiveDropdown(_ref) {
     _useState12 = _slicedToArray(_useState11, 2),
     open = _useState12[0],
     setOpen = _useState12[1];
+  var dropdownRef = (0, _react.useRef)(null);
   var observer = (0, _react.useRef)();
   var lastElementRef = (0, _react.useCallback)(function (node) {
     if (observer.current) observer.current.disconnect();
@@ -116,10 +118,16 @@ function InteractiveDropdown(_ref) {
       };
     }, [ref, onClickOutside]);
   }
-  var wrapperRef = (0, _react.useRef)("menu");
-  useClickOutside(wrapperRef, function () {
+  useClickOutside(dropdownRef, function () {
     setOpen(false);
   });
+  var toggleDropdown = function toggleDropdown(e) {
+    e.stopPropagation(); // Prevent the click event from propagating to the document
+    setOpen(function (prevOpen) {
+      return !prevOpen;
+    });
+  };
+  var wrapperRef = (0, _react.useRef)("menu");
   (0, _react.useEffect)(function () {
     var array = [];
     if (autoFormat) {
@@ -179,69 +187,92 @@ function InteractiveDropdown(_ref) {
       className: "inputfield-label",
       children: label
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      id: name,
       style: {
-        padding: "10px 10px 10px 10px",
-        border: "1px solid #8e8d8d",
-        borderRadius: "6px",
-        display: "flex",
-        minHeight: "35px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "pointer",
-        width: menuWidth ? menuWidth : "100%",
-        pointerEvents: isDisabled ? "none" : "all",
-        opacity: isDisabled ? 0.5 : 1
+        position: "relative",
+        width: menuWidth ? menuWidth : "100%"
       },
-      onClick: function onClick() {
-        setOpen(!open);
-      },
-      ref: wrapperRef,
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        children: isMultiSelect && multiSelection !== null && multiSelection !== void 0 && multiSelection.length && !withChips > 0 ? multiSelection.map(function (select, key) {
-          return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-              className: "chip",
-              style: _objectSpread({}, chipStyle),
-              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-                children: select.label
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                className: "closeButton",
-                onClick: function onClick() {
-                  return handleMultiSelectDelete(select);
-                },
-                children: "\u2715 "
-              })]
-            }, select.value)
-          });
-        }) : null
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        children: selection ? selection.label : placeholder
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
-          src: _arrowDownLightGrey["default"],
-          alt: "",
+      ref: dropdownRef,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        id: name,
+        style: {
+          padding: "10px 10px 10px 10px",
+          border: "1px solid #8e8d8d",
+          borderRadius: "6px",
+          display: "flex",
+          minHeight: "35px",
+          justifyContent: "space-between",
+          alignItems: "center",
+          cursor: "pointer",
+          width: "100%",
+          pointerEvents: isDisabled ? "none" : "all",
+          opacity: isDisabled ? 0.5 : 1
+        },
+        onClick: function onClick(e) {
+          return toggleDropdown(e);
+        },
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
           style: {
-            transition: "all .2s ease"
-          }
-        })
+            marginTop: "2px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            flexWrap: "wrap"
+          },
+          children: isMultiSelect && multiSelection !== null && multiSelection !== void 0 && multiSelection.length && !withChips > 0 ? multiSelection.map(function (select, key) {
+            return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+              children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+                className: "chip",
+                style: _objectSpread({}, chipStyle),
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  children: select.label
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+                  src: _crossIcon["default"],
+                  className: "closeButton",
+                  onClick: function onClick() {
+                    return handleMultiSelectDelete(select);
+                  }
+                })]
+              }, select.value)
+            });
+          }) : null
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          children: selection ? selection.label : placeholder
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+            src: _arrowDownLightGrey["default"],
+            alt: "",
+            style: {
+              transition: "all .2s ease"
+            }
+          })
+        })]
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        "class": "options-container",
+        style: {
+          display: open ? "block" : "none"
+        },
+        children: isMultiSelect ? renderMultiSelectMenu() : renderSelectMenu()
       })]
-    }), isMultiSelect ? renderMultiSelectMenu() : renderSelectMenu(), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      sx: {
-        mt: 1
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      style: {
+        marginTop: "2px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "start",
+        flexWrap: "wrap"
       },
-      children: isMultiSelect && multiSelection !== null && multiSelection !== void 0 && multiSelection.length && withChips && !open > 0 ? multiSelection.map(function (select, key) {
+      children: isMultiSelect && multiSelection !== null && multiSelection !== void 0 && multiSelection.length && withChips && !open ? multiSelection.map(function (select, key) {
         return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
           className: "chip",
           style: _objectSpread({}, chipStyle),
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
             children: select.label
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+            src: _crossIcon["default"],
             className: "closeButton",
             onClick: function onClick() {
               return handleMultiSelectDelete(select);
-            },
-            children: "\u2715 "
+            }
           })]
         }, select.value);
       }) : null
@@ -264,7 +295,7 @@ function InteractiveDropdown(_ref) {
         return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
           children: isComponentOptions ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
             className: "value-label",
-            children: value.html
+            children: value.comp
           }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
             className: "value-label",
             children: ((_value$label = value.label) === null || _value$label === void 0 ? void 0 : _value$label.length) <= 30 ? "".concat(value === null || value === void 0 ? void 0 : value.label) : "".concat(value === null || value === void 0 || (_value$label2 = value.label) === null || _value$label2 === void 0 ? void 0 : _value$label2.substring(0, 30), "...")
@@ -288,8 +319,9 @@ function InteractiveDropdown(_ref) {
           p: 0,
           mt: 0.7
         },
-        keepMounted: true,
-        ref: wrapperRef,
+        keepMounted: true
+        // ref={wrapperRef}
+        ,
         style: {
           width: menuWidth ? menuWidth : "100%",
           border: "1px solid gray",
@@ -376,7 +408,6 @@ function InteractiveDropdown(_ref) {
           mt: 0.7
         },
         keepMounted: true,
-        ref: wrapperRef,
         style: {
           width: menuWidth ? menuWidth : "100%",
           border: "1px solid gray",
