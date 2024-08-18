@@ -167,7 +167,7 @@ The dropdown component uses the following CSS classes which you can override in 
 .selected-styled-menu-div: Styles for selected menu options.
 .no-option-div: Styles for the no options available message.
 
-As this library is in its early stages, we highly encourage users to report any bugs or issues they encounter. We are continuously working it to make the library more sustainable. Thank you for your feedback and support!
+As this library is in its early stages, we highly encourage users to report any bugs or issues they encounter. We are continuously working around it to make the library more sustainable. Thank you for your feedback and support!
 
 ## License
 
